@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Wheel } from 'react-custom-roulette';
 
 const SpinningWheel = () => {
@@ -6,6 +6,24 @@ const SpinningWheel = () => {
   const [movies, setMovies] = useState([]);
   const [mustSpin, setMustSpin] = useState(false);
   const [prizeNumber, setPrizeNumber] = useState(0);
+
+  useEffect(() => {
+    const fetchFavorites = async () => {
+      try {
+        const response = await fetch('/api/favorites');
+        const data = await response.json();
+        if (response.ok) {
+          setMovies(data.map(movie => ({ option: movie })));
+        } else {
+          console.error('Error fetching favorites:', data.message);
+        }
+      } catch (error) {
+        console.error('Error fetching favorites:', error);
+      }
+    };
+
+    fetchFavorites();
+  }, []);
 
   const handleAddMovie = () => {
     if (movieTitle.trim()) {
