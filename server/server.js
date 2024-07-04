@@ -12,8 +12,9 @@ app.use(express.json());
 app.use(express.static(path.join(__dirname, '../client/dist')));
 
 app.get('/api/favorites', async (req, res) => {
+    const username = req.query.username || 'demo';
     try {
-        const user = await User.findOne({ username: 'brayan' }); 
+        const user = await User.findOne({ username }); 
         if (user) {
             res.json(user.favorites);
         } else {
