@@ -1,0 +1,40 @@
+.wheel-div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.wheel-div h1 {
+    text-align: center;
+}
+
+.form-choices-wheel {
+    display: flex;
+    flex-direction: column;
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    margin: 2rem;
+}
+
+.form button {
+    margin: 1rem auto;
+}
+
+.disappear {
+    display: none;
+}
+
+div:has(> span):has(> button) {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 1rem 0;
+}
+
+.spin-btn {
+    margin: 1rem auto;
+}
