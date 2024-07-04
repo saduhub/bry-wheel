@@ -3,28 +3,34 @@ import { Wheel } from 'react-custom-roulette';
 import './spinningWheel.css'
 
 const SpinningWheel = () => {
+  const [username, setUsername] = useState('');
   const [movieTitle, setMovieTitle] = useState('');
   const [movies, setMovies] = useState([]);
   const [mustSpin, setMustSpin] = useState(false);
   const [prizeNumber, setPrizeNumber] = useState(0);
 
-  useEffect(() => {
-    const fetchFavorites = async () => {
-      try {
-        const response = await fetch('/api/favorites');
-        const data = await response.json();
-        if (response.ok) {
-          setMovies(data.map(movie => ({ option: movie })));
-        } else {
-          console.error('Error fetching favorites:', data.message);
-        }
-      } catch (error) {
-        console.error('Error fetching favorites:', error);
+  const fetchFavorites = async (username) => {
+    try {
+      const response = await fetch(`/api/favorites?username=${username}`);
+      const data = await response.json();
+      if (response.ok) {
+        setMovies(data.map(movie => ({ option: movie })));
+      } else {
+        console.error('Error fetching favorites:', data.message);
       }
-    };
+    } catch (error) {
+      console.error('Error fetching favorites:', error);
+    }
+  };
 
-    fetchFavorites();
+  useEffect(() => {
+    fetchFavorites('demo'); 
   }, []);
+
+  const handleLogin = () => {
+    const userToFetch = username.trim().toLowerCase() === 'bry6992' ? 'bry6992' : 'demo';
+    fetchFavorites(userToFetch);
+  };
 
   const handleAddMovie = () => {
     if (movieTitle.trim()) {
@@ -50,14 +56,14 @@ const SpinningWheel = () => {
         <div className='form'>
           <input
             type="text"
-            // value={movieTitle}
-            // onChange={(e) => setMovieTitle(e.target.value)}
-            placeholder="Enter username to exit quick mode"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            placeholder="Enter username to exit demo mode"
             className="border-2 border-gray-300 p-2 rounded"
           />
           <button
             className="bg-sky-300 px-3 py-2 rounded hover:bg-sky-400"
-            // onClick={handleAddMovie}
+            onClick={handleLogin}
           >
             Login
           </button>
